@@ -60,7 +60,7 @@ $l_{i}$ = label
 # Model and design
 
 ## System model
-<img src="img/system.jpg)" width="80%"> <br>
+<img src="img/system.jpg" width="80%"> <br>
 The system consists of:
 * 1 healthcare provider
 * 2 non colluding cloud server
