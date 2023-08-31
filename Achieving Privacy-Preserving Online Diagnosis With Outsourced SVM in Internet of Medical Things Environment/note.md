@@ -30,7 +30,7 @@ System that support
 * multiplication associative (乘法結合律)
 * distributive (分配律)
 ## Support Vector Machine
-<img src="./img/wiki_svm.png" width="50%"> <br>
+<img src="img/svm.jpg" width="50%"> <br>
 (上圖取自維基，與本篇相關性不高)<br>
 SVM 的基本公式為 $d(t)=\sum_{i\in S}^{}(\alpha_{i}y_{i}x_{i}t)+b$ ，其中:
 $S$ = support vector 的集合
@@ -60,7 +60,7 @@ $l_{i}$ = label
 # Model and design
 
 ## System model
-<img src="https://hackmd.io/_uploads/B1cQfBva3.png)" width="80%"> <br>
+<img src="img/system.jpg)" width="80%"> <br>
 The system consists of:
 * 1 healthcare provider
 * 2 non colluding cloud server
