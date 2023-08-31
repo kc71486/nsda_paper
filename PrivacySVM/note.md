@@ -30,7 +30,7 @@ System that support
 * multiplication associative (乘法結合律)
 * distributive (分配律)
 ## Support Vector Machine
-<img src="img/svm.jpg" width="50%"> <br>
+<img src="img/svm.jpg" width="50%" alt="(no preview available, please click here)"> <br>
 (上圖取自維基，與本篇相關性不高)<br>
 SVM 的基本公式為 $d(t)=\sum_{i\in S}^{}(\alpha_{i}y_{i}x_{i}t)+b$ ，其中:
 $S$ = support vector 的集合
@@ -60,7 +60,7 @@ $l_{i}$ = label
 # Model and design
 
 ## System model
-<img src="img/system.jpg" width="80%"> <br>
+<img src="img/system.jpg" width="80%" alt="(no preview available, please click here)"> <br>
 The system consists of:
 * 1 healthcare provider
 * 2 non colluding cloud server
@@ -74,7 +74,7 @@ Threat:
 * External attacks
 # Proposed scheme
 
-<img src="img/scheme.jpg" width="100%"> <br>
+<img src="img/scheme.jpg" width="100%" alt="(no preview available, please click here)"> <br>
 ## System initialization
 伺服器1生成密鑰對 $(PK_{A},SK_{A})$
 伺服器2生成密鑰對 $(PK_{B},SK_{B})$
@@ -121,7 +121,7 @@ $EP^{A}K_{U_{i}}^{A}\overset{K_{A}}{\longrightarrow}t^{A}$
 2. classification result generating
 3. result returning.
 ### Decision function computation
-<br><img src="img/algorithm_2.jpg" width="80%"><br>
+<br><img src="img/algorithm_2.jpg" width="80%" alt="(no preview available, please click here)"><br>
 演算法2為本區主要流程
 本質就是基於<a href=#coreFormula>這個</a>的實作
 k 為 label 數量
@@ -138,9 +138,9 @@ C 隨 i 和 j 改變<br>
 :::info
 用 $M_{A}$ $M_{B}$ 儲存 kernel ，因為相同座標下 kernel 坐標不會因為 classifier 的改變而改變
 :::
-<br><img src="img/algorithm_3.jpg" width="80%"><br>
+<br><img src="img/algorithm_3.jpg" width="80%" alt="(no preview available, please click here)"><br>
 演算法3主要計算 kernal
-<br><img src="img/algorithm_4.jpg" width="80%"><br>
+<br><img src="img/algorithm_4.jpg" width="80%" alt="(no preview available, please click here)"><br>
 演算法4為兩個伺服器共同計算兩數乘積，本篇是將 Z 拆成 $(X^{A}Y^{A}+X^{A}Y^{B}+X^{B}Y^{A}+X^{B}Y^{B})$，利用<a href="#homomorphicEncrypt">同態加密</a>將XY交叉的部分安全算出，過程中 B 為了不讓 A 得知自己的數值，將 $\gamma$ 混進 $ET$ 後給 A ，自己再減去做補償
 :::info
 若不加入 $\gamma$ ，A 在最後一步解密時可知道 $X^{A}Y^{B}+X^{B}Y^{A}$ 的值，其中 A 知道 $X^{A}$ 及 $Y^{A}$，B 的可能值只有平面上的一條線，這樣會大幅增加 B 洩漏的風險
@@ -163,7 +163,7 @@ int plainSM(int XA, int YA, int XB, int YB) { // 無加密 & 簡化
 }
 ```
 ### Classification result generating
-<br><img src="img/algorithm_5.jpg" width="80%"><br>
+<br><img src="img/algorithm_5.jpg" width="80%" alt="(no preview available, please click here)"><br>
 $W_{i}$ 為最佳決策的值與目前決策的值之差
 $Z_{i}$ 為最佳決策的標籤與目前決策的標籤之差
 $U_{i}$ 為 1 時原本最佳決策比較好，為 0 時目前新的決策比較好，需要注意的是因為 SC 最後用 SM，A 與 B 不會都拿到 0.5 或 0
@@ -205,7 +205,7 @@ int plainSMCF(int[] DA, int[] LA, int[] DB, int[] LB) { // 無加密 & 簡化
     return MLA + MLB;
 }
 ```
-<br><img src="img/algorithm_6.jpg" width="80%"><br>
+<br><img src="img/algorithm_6.jpg" width="80%" alt="(no preview available, please click here)"><br>
 演算法6
 S1 = A 和 B 的差的絕對值, S2 = 一個比 NA 小很多的數
 S1 和 S2 符合以下關係:
