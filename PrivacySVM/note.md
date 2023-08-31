@@ -49,7 +49,7 @@ $d(t)=\sum_{i\in S}^{}(\alpha_{i}y_{i}K(x_{i},t))+b$
 :::
 為了解決多類別問題，本篇採用 One versus Rest 方法，也就是先拿其中一類當作+1類，剩下的類別當作-1類，然後用二元分類器學習一次得到一個decision hyperplane；然後第二次繼續拿下一類當作+1類，剩下的類別當作-1類，學習一個decision hyperplane；直到所以的類別都有當作+1類為止，最後看decision value哪個比較大，資料就判給哪一類。
 此時方程式變成:
-<span id="coreFormula">$M_{c}=\large\substack{argmax \\i=1,...,k}\Big(\sum_{j\in S_{i}}(\alpha_{ij}y_{ij}e^{\gamma\left\| x_{ij}-t \right\|_{2}^{2}})+b_{i}\Big)$</span>
+<span id="coreFormula"> $M_{c}=\large\substack{argmax \\i=1,...,k}\Big(\sum_{j\in S_{i}}(\alpha_{ij}y_{ij}e^{\gamma\left\| x_{ij}-t \right\|_{2}^{2}})+b_{i}\Big)$ </span>
 其中 $M_{c}$ 為具有最大決策函數值的對應類別標籤
 <br>
 後面用到的SVM參數有些不同，主要有以下四類:
@@ -146,8 +146,7 @@ C 隨 i 和 j 改變<br>
 若不加入 $\gamma$ ，A 在最後一步解密時可知道 $X^{A}Y^{B}+X^{B}Y^{A}$ 的值，其中 A 知道 $X^{A}$ 及 $Y^{A}$，B 的可能值只有平面上的一條線，這樣會大幅增加 B 洩漏的風險
 :::
 最終結果就是
-$\begin{array}{rcl}
-Z=Z^{A}+Z^{B}& = & (X^{A}Y^{A}+\gamma+X^{A}Y^{B}+Y^{A}X^{B}+X^{B}Y^{B}-\gamma) \\& = & (X^{A}+X^{B})(Y^{A}+Y^{B}) \\& = & XY\end{array}$
+$\begin{array}{rcl}Z=Z^{A}+Z^{B}& = & (X^{A}Y^{A}+\gamma+X^{A}Y^{B}+Y^{A}X^{B}+X^{B}Y^{B}-\gamma) \\& = & (X^{A}+X^{B})(Y^{A}+Y^{B}) \\& = & XY\end{array}$
 :::danger
 論文寫的 $Z^{A}+Z^{B}=(X^{A}Y^{A}+\gamma+X^{A}X^{B}+Y^{A}Y^{B}+X^{B}Y^{B}-\gamma)=XY$ 是錯誤的，由演算法推演及式子化簡皆能得知
 :::
