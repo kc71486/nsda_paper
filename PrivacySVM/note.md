@@ -61,7 +61,7 @@ $l_{i}$ = label
 # Model and design
 
 ## System model
-<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/system.jpg" width="80%" alt="(click this if you can't see image)"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/system.jpg" width="80%" alt="System with 3 groups involved"> <br>
 The system consists of:
 * 1 healthcare provider
 * 2 non colluding cloud server
@@ -75,7 +75,7 @@ Threat:
 * External attacks
 # Proposed scheme
 
-<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/scheme.jpg" width="100%" alt="(click this if you can't see image)"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/scheme.jpg" width="100%" alt="Scheme"> <br>
 ## System initialization
 伺服器1生成密鑰對 $(PK_{A},SK_{A})$
 伺服器2生成密鑰對 $(PK_{B},SK_{B})$
@@ -122,7 +122,7 @@ $EP^{A}K_{U_{i}}^{A}\overset{K_{A}}{\longrightarrow}t^{A}$
 2. classification result generating
 3. result returning.
 ### Decision function computation
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_2.jpg width="80%" alt="(click this if you can't see image)"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_2.jpg width="80%" alt="Algorithm 2:Secure Decision Function Computing"><br>
 演算法2為本區主要流程
 本質就是基於<a href=#coreFormula>這個</a>的實作
 k 為 label 數量
@@ -139,9 +139,9 @@ C 隨 i 和 j 改變<br>
 :::info
 用 $M_{A}$ $M_{B}$ 儲存 kernel ，因為相同座標下 kernel 坐標不會因為 classifier 的改變而改變
 :::
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_3.jpg width="80%" alt="(click this if you can't see image)"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_3.jpg width="80%" alt="Algorithm 3: Secure Kernel Function Computing"><br>
 演算法3主要計算 kernal
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_4.jpg width="80%" alt="(click this if you can't see image)"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_4.jpg width="80%" alt="Algorithm 4:Secure Multiplication"><br>
 演算法4為兩個伺服器共同計算兩數乘積，本篇是將 Z 拆成 $(X^{A}Y^{A}+X^{A}Y^{B}+X^{B}Y^{A}+X^{B}Y^{B})$，利用<a href="#homomorphicEncrypt">同態加密</a>將XY交叉的部分安全算出，過程中 B 為了不讓 A 得知自己的數值，將 $\gamma$ 混進 $ET$ 後給 A ，自己再減去做補償
 :::info
 若不加入 $\gamma$ ，A 在最後一步解密時可知道 $X^{A}Y^{B}+X^{B}Y^{A}$ 的值，其中 A 知道 $X^{A}$ 及 $Y^{A}$，B 的可能值只有平面上的一條線，這樣會大幅增加 B 洩漏的風險
@@ -165,7 +165,7 @@ int plainSM(int XA, int YA, int XB, int YB) { // 無加密 & 簡化
 }
 ```
 ### Classification result generating
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_5.jpg width="80%" alt="(click this if you can't see image)"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_5.jpg width="80%" alt="Algorithm 5: Secure Maximum Class Finding"><br>
 $W_{i}$ 為最佳決策的值與目前決策的值之差
 $Z_{i}$ 為最佳決策的標籤與目前決策的標籤之差
 $U_{i}$ 為 1 時原本最佳決策比較好，為 0 時目前新的決策比較好，需要注意的是因為 SC 最後用 SM，A 與 B 不會都拿到 0.5 或 。
@@ -207,7 +207,7 @@ int plainSMCF(int[] DA, int[] LA, int[] DB, int[] LB) { // 無加密 & 簡化
     return MLA + MLB;
 }
 ```
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_6.jpg width="80%" alt="(click this if you can't see image)"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_6.jpg width="80%" alt="Algorithm 6:Secure Comparison"><br>
 演算法6
 S1 = A 和 B 的差的絕對值, S2 = 一個比 NA 小很多的數
 S1 和 S2 符合以下關係:
@@ -271,7 +271,7 @@ $L_{k}=ML^{A}+ML^{B}$
 本方法只有在一開始寄原始資料、演算法3、4、6和寄回結果會用到網路，然而寄原始資料時用$Pk_{A}$、$Pk_{B}$加密，演算法3、4、6用$Pk_{A}$加密，寄回結果用$Pk_{U_{i}}$加密，外人不會有方法知道這些資訊。
 # Evaluation and performance analysis
 ## Complexity Analysis
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/complexity.png width="100%" alt="Computational and Communication Complexity comparison(click this if you can't see image)"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/complexity.png width="100%" alt="Computational and Communication Complexity comparison"><br>
 N = paillier ciphertext 長度
 指數運算花費時間遠比乘法運算高，而由別的論文得知指數運算花費時間約等於 $1.5*len(n)$，本篇忽略乘法運算花費時間，專注在指數運算花費時間。
 整個流程可以劃分成三個階段:
@@ -279,8 +279,15 @@ N = paillier ciphertext 長度
 2. 隱私SVM操作
 3. 讀取結果
 
-在用戶請求生成階段，用戶請求生成的計算成本包括用戶樣本的加密和隨機生成的密鑰。 AES 的加密效率遠遠高於同態加密。因此，用戶樣本的AES加密過程可以忽略不計，計算成本僅與隨機生成密鑰的加密有關，只需要4次冪運算。 通信成本由用戶樣本的密文和隨機生成的密鑰組成。 AES 密文的長度與明文的長度相同。所以傳輸時間複雜度為 $2(len(t))+2(len(N))$。<br>
+在使用者發出請求的階段，用戶請求生成的計算成本包括用戶樣本的加密和隨機生成的密鑰。 AES 的加密效率遠遠高於同態加密。因此，用戶樣本的AES加密過程可以忽略不計，計算成本僅與隨機生成密鑰的加密有關，只需要4次冪運算。 通信成本由用戶樣本的密文和隨機生成的密鑰組成。 AES 密文的長度與明文的長度相同。所以傳輸時間複雜度為 $2(len(t))+2(len(N))$。<br>
 在SVM計算階段，雲端首先解密 $EKA_{U_{i}}$ 和 $EKB_{U_{i}}$ 得到密鑰，並解密用戶樣本，這需要 $2$ 次指數運算。演算法 3 中，共執行 $(3m+9)$ 次指數運算並傳輸 $((m+3)len(N))$ 位元。演算法 4 中，共執行 $9$ 次指數運算並傳輸 $3(N)$ 位元。演算法 6 中， 需要 $18$ 次指數運算並傳輸 $5len(N)$ 位元。演算法 2 中，在處理每個支持向量時需要呼叫演算法 3 和 4 。 因此，演算法 2 最多需要 $(3m+18)s+2$ 次指數運算並傳輸 $(ms+6s)len(N)$ 位元，因為不同的決策函數可能共享相同的支持向量，可以節省大量計算量，其中 s 表示所有支持向量的數量。演算法 5 中，需要分別呼叫演算法 6 和 4 $(k-1)$ 次和 $2(k-1)$ 次。因此，演算法 5 需要 $36k-27$ 次指數運算並傳輸位 $(11k-8)len(N)$ 位元。<br>
+在讀取結果階段，$U_{i}$ 要對伺服器傳來的結果解密，因此需要 $2$ 次指數運算並傳輸位 $4len(N)$ 位元。<br>
+表4為各演算法在三個不同階段的比較，從該表可以發現本方法在伺服器端的複雜度比其他方法高，而在醫療保健提供者 (HP) 及使用者複雜度比其他方法低。伺服器端較高的複雜度來自對診斷模型的保護，多數其他方法都忽略此部分，因此他們有較低的複雜度。HP 及使用者複雜度較低的複雜度是因為他們不參與分類或決策結果的計算。
 ## Comparative Analysis
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/comparison.png width="100%" alt=""><br>
 ## Experiment Analysis
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/cost_vary_m.png width="80%" alt=""><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/cost_vary_s.png width="80%" alt=""><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/cost_decision.png width="80%" alt=""><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/cost_comparison.png width="80%" alt=""><br>
 # Conclusion
