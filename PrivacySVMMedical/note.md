@@ -30,7 +30,7 @@ System that support:
 * multiplication associative (乘法結合律)
 * distributive (分配律)
 ## Support Vector Machine
-<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/svm.jpg" width="60%"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/svm.jpg" width="60%" alt="svm image"> <br>
 SVM 的基本公式為 $d(t)=\sum_{i\in S}^{}(\alpha_{i}y_{i}x_{i}t)+b$ ，其中:
  * $S$ = support vector 的集合
  * $x_{i}$ = support vector (資料點的向量)
