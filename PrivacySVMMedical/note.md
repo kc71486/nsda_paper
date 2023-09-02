@@ -30,8 +30,7 @@ System that support:
 * multiplication associative (乘法結合律)
 * distributive (分配律)
 ## Support Vector Machine
-<img src="https://hackmd.io/_uploads/HybPBSv6n.png" width="50%"> <br>
-(上圖取自維基，與本篇相關性不高)<br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/svm.jpg" width="60%"> <br>
 SVM 的基本公式為 $d(t)=\sum_{i\in S}^{}(\alpha_{i}y_{i}x_{i}t)+b$ ，其中:
  * $S$ = support vector 的集合
  * $x_{i}$ = support vector (資料點的向量)
@@ -61,7 +60,7 @@ $l_{i}$ = label
 # Model and design
 
 ## System model
-<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/system.jpg" width="80%" alt="System with 3 groups involved"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/system.jpg" width="80%" alt="System with 3 groups involved"> <br>
 The system consists of:
 * 1 healthcare provider
 * 2 non colluding cloud server
@@ -75,7 +74,7 @@ Threat:
 * External attacks
 # Proposed scheme
 
-<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/scheme.jpg" width="100%" alt="Scheme"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/scheme.jpg" width="100%" alt="Scheme"> <br>
 ## System initialization
 伺服器1生成密鑰對 $(PK_{A},SK_{A})$
 伺服器2生成密鑰對 $(PK_{B},SK_{B})$
@@ -122,7 +121,7 @@ $EP^{A}K_{U_{i}}^{A}\overset{K_{A}}{\longrightarrow}t^{A}$
 2. classification result generating
 3. result returning.
 ### Decision function computation
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_2.jpg width="80%" alt="Algorithm 2:Secure Decision Function Computing"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/algorithm_2.jpg width="80%" alt="Algorithm 2:Secure Decision Function Computing"><br>
 演算法2為本區主要流程
 本質就是基於<a href=#coreFormula>這個</a>的實作
 k 為 label 數量
@@ -139,9 +138,9 @@ C 隨 i 和 j 改變<br>
 :::info
 用 $M_{A}$ $M_{B}$ 儲存 kernel ，因為相同座標下 kernel 坐標不會因為 classifier 的改變而改變
 :::
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_3.jpg width="80%" alt="Algorithm 3: Secure Kernel Function Computing"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/algorithm_3.jpg width="80%" alt="Algorithm 3: Secure Kernel Function Computing"><br>
 演算法3主要計算 kernal
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_4.jpg width="80%" alt="Algorithm 4:Secure Multiplication"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/algorithm_4.jpg width="80%" alt="Algorithm 4:Secure Multiplication"><br>
 演算法4為兩個伺服器共同計算兩數乘積，本篇是將 Z 拆成 $(X^{A}Y^{A}+X^{A}Y^{B}+X^{B}Y^{A}+X^{B}Y^{B})$，利用<a href="#homomorphicEncrypt">同態加密</a>將XY交叉的部分安全算出，過程中 B 為了不讓 A 得知自己的數值，將 $\gamma$ 混進 $ET$ 後給 A ，自己再減去做補償
 :::info
 若不加入 $\gamma$ ，A 在最後一步解密時可知道 $X^{A}Y^{B}+X^{B}Y^{A}$ 的值，其中 A 知道 $X^{A}$ 及 $Y^{A}$，B 的可能值只有平面上的一條線，這樣會大幅增加 B 洩漏的風險
@@ -165,7 +164,7 @@ int plainSM(int XA, int YA, int XB, int YB) { // 無加密 & 簡化
 }
 ```
 ### Classification result generating
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_5.jpg width="80%" alt="Algorithm 5: Secure Maximum Class Finding"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/algorithm_5.jpg width="80%" alt="Algorithm 5: Secure Maximum Class Finding"><br>
 $W_{i}$ 為最佳決策的值與目前決策的值之差
 $Z_{i}$ 為最佳決策的標籤與目前決策的標籤之差
 $U_{i}$ 為 1 時原本最佳決策比較好，為 0 時目前新的決策比較好，需要注意的是因為 SC 最後用 SM，A 與 B 不會都拿到 0.5 或 。
@@ -207,7 +206,7 @@ int plainSMCF(int[] DA, int[] LA, int[] DB, int[] LB) { // 無加密 & 簡化
     return MLA + MLB;
 }
 ```
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/algorithm_6.jpg width="80%" alt="Algorithm 6:Secure Comparison"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/algorithm_6.jpg width="80%" alt="Algorithm 6:Secure Comparison"><br>
 演算法6
 S1 = A 和 B 的差的絕對值, S2 = 一個比 NA 小很多的數
 S1 和 S2 符合以下關係:
@@ -271,7 +270,7 @@ $L_{k}=ML^{A}+ML^{B}$
 本方法只有在一開始寄原始資料、演算法3、4、6和寄回結果會用到網路，然而寄原始資料時用$Pk_{A}$、$Pk_{B}$加密，演算法3、4、6用$Pk_{A}$加密，寄回結果用$Pk_{U_{i}}$加密，外人不會有方法知道這些資訊。
 # Evaluation and performance analysis
 ## Complexity Analysis
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/complexity.png width="100%" alt="Computational and Communication Complexity comparison"><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/complexity.png width="100%" alt="Computational and Communication Complexity comparison"><br>
 N = paillier ciphertext 長度
 指數運算花費時間遠比乘法運算高，而由別的論文得知指數運算花費時間約等於 $1.5*len(n)$，本篇忽略乘法運算花費時間，專注在指數運算花費時間。
 整個流程可以劃分成三個階段:
@@ -284,10 +283,10 @@ N = paillier ciphertext 長度
 在讀取結果階段，$U_{i}$ 要對伺服器傳來的結果解密，因此需要 $2$ 次指數運算並傳輸位 $4len(N)$ 位元。<br>
 表4為各演算法在三個不同階段的比較，從該表可以發現本方法在伺服器端的複雜度比其他方法高，而在醫療保健提供者 (HP) 及使用者複雜度比其他方法低。伺服器端較高的複雜度來自對診斷模型的保護，多數其他方法都忽略此部分，因此他們有較低的複雜度。HP 及使用者複雜度較低的複雜度是因為他們不參與分類或決策結果的計算。
 ## Comparative Analysis
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/comparison.png width="100%" alt=""><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/comparison.png width="100%" alt=""><br>
 ## Experiment Analysis
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/cost_vary_m.png width="80%" alt=""><br>
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/cost_vary_s.png width="80%" alt=""><br>
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/cost_decision.png width="80%" alt=""><br>
-<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVM/img/cost_comparison.png width="80%" alt=""><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/cost_vary_m.png width="80%" alt=""><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/cost_vary_s.png width="80%" alt=""><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/cost_decision.png width="80%" alt=""><br>
+<br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/cost_comparison.png width="80%" alt=""><br>
 # Conclusion
