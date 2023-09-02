@@ -19,10 +19,11 @@ Diffie-Hellman (DDH)，循環集 $\mathbb{G}$ 中，給定 $g$, $g^{x}$, $g^{y}$
 Beta Distribution 的公式如下:
 $f(x|a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{\alpha-1}(1-x)^{\beta-1}$
 其中 $0\le x\le 1,\alpha>0,\beta>0$
-該分布 $\alpha$ 越大，圖形偏左邊， $\beta$ 越大，圖形偏右邊，兩者同時變大時圖形偏中間，同時為1時為平均分布
-該分布的期望值$E(x)=\frac{\alpha}{\alpha+\beta}$
+該分布 $\alpha$ 越大，圖形偏左邊， $\beta$ 越大，圖形偏右邊，兩者同時變大時圖形偏中間，同時為1時為平均分布。
+該分布的期望值 $E(x)=\frac{\alpha}{\alpha+\beta}$
 ## Paillier Algorithm
 # Problem Statement
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/scheme.png" width="100%"> <br>
 ## System Architecture
 ## Security Model
 ## Design Goals
