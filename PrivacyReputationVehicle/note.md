@@ -53,7 +53,7 @@ $f(x|a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{\alpha-1}(1-x)^{\beta-1}$，
  * inference attack (推理攻擊)
  * location inference attack (推理位置)
  * identity inference attack (推理真實身分)
-感測車: 多數誠實，少數惡意
+感測車輛: 多數誠實，少數惡意
  * data pollution attack (數據污染攻擊): 提供錯誤感測數據
  * Sybil attack (女巫攻擊): 利用不同的假名多次提交相同的感測數據
  * data replacement attack (數據替換攻擊): 用不正確的感測數據替換正確的感測數據以通過數據評估
@@ -67,11 +67,57 @@ $f(x|a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{\alpha-1}(1-x)^{\beta-1}$，
  * 名聲值隱私
 ### Security Goals
 # Design of proposed scheme
-<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/notation.png" width="100%" alt="scheme(Fig 2)"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/notation.png" width="80%" alt="scheme(Fig 2)"> <br>
 ## Overview
 ## Basic Algorithm Construction
 ### RVEV Algorithm
+來源:"Efficient proofs that a committed number lies in an interval"
+一個只提供一方加密後數值，判斷加密前的兩數是否相同的演算法。
+Setup:
+一個模數為 p($p\in$ 質數) 的循環群，g、h 為 generator。p、g、h 為公共參數。
+t 代表名聲中心的內名聲值，t' 代表車輛上交的名聲值(可能不合法)。
+Commitment:
+感測車輛傳送 $Cm'_{vi}=g^{t'}\cdot h^{r'}\text{ mod }p$，其中 r 為隨機數。
+Challenge:
+雲端伺服器將 $Cm'_{vi}$ 送至名聲中心。
+Response:
+名聲中心隨機選擇 $\omega$、$\eta$、$\eta'$，並計算:
+$Cm_{1}=g^{\omega}\cdot h^{\eta}\text{ mod }p$，
+$Cm_{2}=g^{\omega}\cdot h^{\eta'}\text{ mod }p$，
+$H=Hash(Cm_{1}||Cm_{2})$。再計算:
+$D=\omega+H\cdot t'$，
+$D_{1}=\eta+H\cdot r'$，
+$D_{2}=\eta'+H\cdot r$，
+最後名聲中心將 \{$H,D,D_{1},D_{2},Cm'_{vi}$\} 送至雲端伺服器。
+Verification:
+雲端伺服器檢查
+$H=Hash(g^{D}h^{D1}(Cm'_{vi})^{-H}||g^{D}h^{D2}(Cm'_{vi})^{-H})\text{ mod }p$
+是否成立。若成立，伺服器相信加密前兩個名聲值相同。
+:::info
+整體式子化簡後變成(忽略 mod p):
+$1||1 == g^{H\cdot t'}h^{H\cdot r'}(Cm'_{vi})^{-H}||g^{H\cdot t'}h^{H\cdot r}(Cm'_{vi})^{-H}$，
+若 $Cm'_{vi}=g^{t'}\cdot h^{r'}$，右邊可正負對消變成 $1||1$。
+:::
 ### RVRP Algorithm
+來源:"PACE: Privacy-preserving and quality-aware incentive mechanism for mobile crowdsensing"
+$t$ 代表車輛的名聲值，$t_{0}$ 代表名聲值下限，$b$代表名聲值上限。
+若 $t_{0}\le t\le b$，t 位於指定名聲區間。
+Setup:
+一個模數為 p($p\in$ 質數) 的循環群，g、h 為 generator。p、g、h 為公共參數。
+Commitment:
+伺服器計算 $Cm_{r}=g^{(t-t_{0})}\cdot h^{(r-r_{0})}\text{ mod }p$，其中 $r$、$r_{0}$ 為隨機數。
+Challenge:
+雲端伺服器將 $C_{t_{0}}$, $C_{r_{0}}$, $b$ 送至名聲中心，其中 $C_{t_{0}}$、$C_{r_{0}}$。為使用名聲中心公鑰加密 $t_{0}$、$r_{0}$ 的密文。
+Response:
+名聲中心解密 $C_{t_{0}}$、$C_{r_{0}}$ 並判斷 $t_{0}\le t\le b$ 是否成立，若不成立，則回傳 $\bot$。若成立，則計算
+$Cm_{v1}=g^{|b-(t-t_{0})|}\cdot h^{-(r-r_{0})}\text{ mod }p$、
+$Cm_{v2}=g^{|t-t_{0}|}\cdot h^{(r-r_{0})}\text{ mod }p$
+最後名聲中心將 $Cm_{v1}$、$Cm_{v2}$ 送至雲端伺服器。
+Verification:
+雲端伺服器檢查
+$\left\{ \begin{array}{l} Cm_{v1}=g^{b}\cdot(Cm_{r})^{-1}\text{ mod }p\\Cm_{v2}=Cm_{r}\text{ mod }p\end{array}\right.$
+是否成立。若成立，伺服器相信名聲值 t 位於指定名聲區間。
+
 ### TFRU Algorithm
 ## Detail Design 
 # Theoretical analysis
