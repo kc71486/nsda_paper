@@ -128,14 +128,31 @@ Rg 代表 group weight。
 演算法如下:
 $\left\{\begin{array}{l}\alpha_{Rn}=Rf\cdot\alpha_{Rn-1}+Rg\cdot s_{Rn}\\\beta_{Rn}=Rf\cdot\beta_{Rn-1}+(1-Rg)\cdot u_{Rn}\\t=E(x)=\frac{\alpha_{Rn}}{\alpha_{Rn}+\beta_{Rn}}\end{array}\right.$
 ## Detail Design
-<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/locationmatrix.png" width="80%" alt="location matrix(Fig 3)">
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/locationmatrix.png" width="80%" alt="location matrix(Fig 3)"> <br>
+數據請求者擁有 $(Pk_{d_{a}}, Sk_{d_{a}})$ 及 $(Pk_{d_{h}}, Sk_{d_{h}})$，其中後者支援同態加密。
+名聲中心擁有 $(Pk_{r}, Sk_{r})$。
+名聲中心計算暱稱 $P_{vid}=g^{vid}\oplus R_{vi}\text{ mod }p$，其中 $vid$ 為真實身分，$R_{vi}$ 為隨機數。
+名聲中心加密名聲 $Cm_{vi}=g^{t}\cdot h^{r}\text{ mod }p$。
+名聲中心透過安全管道將 $\{P_{vid},Cm_{vi}\}$ 傳給各感測車輛。
 ### Assign tasks
+#### Define standard value
 數據請求者定義:
-感測內容 $m$，加密成 $C_{m}$；
+感測內容 $m$，加密 $m\longrightarrow C_{m}$；
 序列號 $T$；
-標準值 $d_{0}$，選擇 $\varepsilon_{d0}$ 並加密成 $C_{d0}=g^{-d0}\cdot\varepsilon_{d0}^{n}\text{ mod }n^{2}$；
-誤差閾值 $\Delta d$，選擇 $\varepsilon_{\Delta d}$ 並加密成 $C_{\Delta d}=g^{-\Delta d}\cdot\varepsilon_{\Delta d}^{n}\text{ mod }n^{2}$。
+標準值 $d_{0}$，選擇 $\varepsilon_{d0}$ ，加密 $C_{d0}=g^{-d0}\cdot\varepsilon_{d0}^{n}\text{ mod }n^{2}$；
+誤差閾值 $\Delta d$，選擇 $\varepsilon_{\Delta d}$ ，加密 $C_{\Delta d}=g^{-\Delta d}\cdot\varepsilon_{\Delta d}^{n}\text{ mod }n^{2}$。
+#### Generate location matrix
+數據請求者生成包含基底為 0 ，參雜數個非 0 區塊的矩陣當作位置矩陣，形成Ml (如圖 3b)。
+接著將這些非 0 填上 $Cm_{T}=(g^{t_{0}}\cdot h^{r_{0}})^{-1}\text{ mod }p$，其中 $t_{0}$ 為任務的名聲下限，$r_{0}$ 為隨機數，形成Mdl (如圖 3c)。
+接著用名聲中心公鑰加密 $t_{0}$ 及 $r_{0}$ :
+$t_{0}\overset{PK_{r}}{\longrightarrow}C_{t0}$
+$r_{0}\overset{PK_{r}}{\longrightarrow}C_{r0}$
+#### Broadcast task
+數據請求者將 $I_{d}=\{T,Pk_{d_{a}},Pk_{d_{h}},C_{m},\textbf{Mdl},C_{t_{0}},C_{r_{0}},C_{d0},C_{\Delta d}\}$  傳給雲端伺服器，
+將 $I_{cl}=\{T,Pk_{d_{a}}\}$ 傳給感測車輛。
 ### Recruit vehicles
+#### Generate location matrix
+#### Submit information
 ### Select vehicles
 ### Submit data
 ### Process data and return results
