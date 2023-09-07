@@ -71,7 +71,7 @@ $f(x|a,b)=\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}x^{\alpha-1}(1-x)^{\beta-1}$，
 ## Overview
 ## Basic Algorithm Construction
 ### RVEV Algorithm
-來源:"Efficient proofs that a committed number lies in an interval"
+來源:"Efficient proofs that a committed number lies in an interval"。
 一個只提供一方加密後數值，判斷加密前的兩數是否相同的演算法。
 Setup:
 一個模數為 p($p\in$ 質數) 的循環群，g、h 為 generator。p、g、h 為公共參數。
@@ -99,7 +99,8 @@ $1||1 == g^{H\cdot t'}h^{H\cdot r'}(Cm'_{vi})^{-H}||g^{H\cdot t'}h^{H\cdot r}(Cm
 若 $Cm'_{vi}=g^{t'}\cdot h^{r'}$，右邊可正負對消變成 $1||1$。
 :::
 ### RVRP Algorithm
-來源:"PACE: Privacy-preserving and quality-aware incentive mechanism for mobile crowdsensing"
+來源:"PACE: Privacy-preserving and quality-aware incentive mechanism for mobile crowdsensing"。
+一個判斷指定名聲是否在指定區間的演算法
 $t$ 代表車輛的名聲值，$t_{0}$ 代表名聲值下限，$b$代表名聲值上限。
 若 $t_{0}\le t\le b$，t 位於指定名聲區間。
 Setup:
@@ -119,7 +120,27 @@ $\left\{ \begin{array}{l} Cm_{v1}=g^{b}\cdot(Cm_{r})^{-1}\text{ mod }p\\Cm_{v2}=
 是否成立。若成立，伺服器相信名聲值 t 位於指定名聲區間。
 
 ### TFRU Algorithm
-## Detail Design 
+來源:"BTRES: Beta-based trust and reputation evaluation system for wireless sensor networks"。
+一個根據名聲報告更新名聲值的演算法，更新 beta distribution 參數而不是單純線性更新。
+s 代表正回饋，u 代表負回饋，
+Rf 代表 forgetting factor，
+Rg 代表 group weight。
+演算法如下:
+$\left\{\begin{array}{l}\alpha_{Rn}=Rf\cdot\alpha_{Rn-1}+Rg\cdot s_{Rn}\\\beta_{Rn}=Rf\cdot\beta_{Rn-1}+(1-Rg)\cdot u_{Rn}\\t=E(x)=\frac{\alpha_{Rn}}{\alpha_{Rn}+\beta_{Rn}}\end{array}\right.$
+## Detail Design
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/locationmatrix.png" width="80%" alt="location matrix(Fig 3)">
+### Assign tasks
+數據請求者定義:
+感測內容 $m$，加密成 $C_{m}$；
+序列號 $T$；
+標準值 $d_{0}$，選擇 $\varepsilon_{d0}$ 並加密成 $C_{d0}=g^{-d0}\cdot\varepsilon_{d0}^{n}\text{ mod }n^{2}$；
+誤差閾值 $\Delta d$，選擇 $\varepsilon_{\Delta d}$ 並加密成 $C_{\Delta d}=g^{-\Delta d}\cdot\varepsilon_{\Delta d}^{n}\text{ mod }n^{2}$。
+### Recruit vehicles
+### Select vehicles
+### Submit data
+### Process data and return results
+### Send reputation feedback reports
+### Update reputation values and pseudonyms
 # Theoretical analysis
 ## Property Analysis
 ## Privacy Analysis
