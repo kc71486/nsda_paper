@@ -128,13 +128,13 @@ Rg 代表 group weight。
 演算法如下:
 $\left\{\begin{array}{l}\alpha_{Rn}=Rf\cdot\alpha_{Rn-1}+Rg\cdot s_{Rn}\\\beta_{Rn}=Rf\cdot\beta_{Rn-1}+(1-Rg)\cdot u_{Rn}\\t=E(x)=\frac{\alpha_{Rn}}{\alpha_{Rn}+\beta_{Rn}}\end{array}\right.$
 ## Detail Design
-<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/locationmatrix.png" width="80%" alt="location matrix(Fig 3)"> <br>
 數據請求者擁有 $(Pk_{d_{a}}, Sk_{d_{a}})$ 及 $(Pk_{d_{h}}, Sk_{d_{h}})$，其中後者支援同態加密。
 名聲中心擁有 $(Pk_{r}, Sk_{r})$。
 名聲中心計算暱稱 $P_{vid}=g^{vid}\oplus R_{vi}\text{ mod }p$，其中 $vid$ 為真實身分，$R_{vi}$ 為隨機數。
 名聲中心加密名聲 $Cm_{vi}=g^{t}\cdot h^{r}\text{ mod }p$。
 名聲中心透過安全管道將 $\{P_{vid},Cm_{vi}\}$ 傳給各感測車輛。
 ### Assign tasks
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/locationmatrixtask.png" width="80%" alt="location matrix for task (Fig 3)"> <br>
 #### Define standard value
 數據請求者定義:
 感測內容 $m$，加密 $m\longrightarrow C_{m}$；
@@ -151,6 +151,7 @@ $r_{0}\overset{PK_{r}}{\longrightarrow}C_{r0}$
 數據請求者將 $I_{d}=\{T,Pk_{d_{a}},Pk_{d_{h}},C_{m},\textbf{Mdl},C_{t_{0}},C_{r_{0}},C_{d0},C_{\Delta d}\}$  傳給雲端伺服器，
 將 $I_{cl}=\{T,Pk_{d_{a}}\}$ 傳給感測車輛。
 ### Recruit vehicles
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/locationmatrixcar.png" width="80%" alt="location matrix for car (Fig 4)"> <br>
 #### Generate location matrix
 #### Submit information
 ### Select vehicles
