@@ -131,9 +131,12 @@ $\left\{\begin{array}{l}\alpha_{Rn}=Rf\cdot\alpha_{Rn-1}+Rg\cdot s_{Rn}\\\beta_{
 ## Detail Design
 數據請求者擁有 $(Pk_{d_{a}}, Sk_{d_{a}})$ 及 $(Pk_{d_{h}}, Sk_{d_{h}})$，其中後者支援同態加密。
 名聲中心擁有 $(Pk_{r}, Sk_{r})$。
-名聲中心計算暱稱 $P_{vid}=g^{vid}\oplus R_{vi}\text{ mod }p$，其中 $vid$ 為真實身分，$R_{vi}$ 為隨機數。
+名聲中心計算化名 $P_{vid}=g^{vid}\oplus R_{vi}\text{ mod }p$，其中 $vid$ 為真實身分，$R_{vi}$ 為隨機數。
 名聲中心加密名聲 $Cm_{vi}=g^{t}\cdot h^{r}\text{ mod }p$。
 名聲中心透過安全管道將 $\{P_{vid},Cm_{vi}\}$ 傳給各感測車輛。
+:::info
+名聲中心與感測車輛的安全管道如何建立不在本篇討論範圍內。
+:::
 ### Assign tasks
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/locationmatrixtask.png" width="80%" alt="location matrix for task (Fig 3)"> <br>
 #### Define standard value
@@ -142,6 +145,9 @@ $\left\{\begin{array}{l}\alpha_{Rn}=Rf\cdot\alpha_{Rn-1}+Rg\cdot s_{Rn}\\\beta_{
 序列號 $T$；
 標準值 $d_{0}$，選擇 $\varepsilon_{d0}$ ，加密 $C_{d0}=g^{-d0}\cdot\varepsilon_{d0}^{n}\text{ mod }n^{2}$；
 誤差閾值 $\Delta d$，選擇 $\varepsilon_{\Delta d}$ ，加密 $C_{\Delta d}=g^{-\Delta d}\cdot\varepsilon_{\Delta d}^{n}\text{ mod }n^{2}$。
+:::info
+$C_{d0}$ 和 $C_{\Delta d}$ 加密的時候指數為負號，這樣後面同態加法就會變減法。
+:::
 #### Generate location matrix
 數據請求者生成一個空白位置矩陣，將想指派任務的區塊變成非 0，形成 Ml (如圖 3b)，可以有多個任務。
 :::info
@@ -169,10 +175,17 @@ $r_{0}\overset{PK_{r}}{\longrightarrow}C_{r0}$
 當 $\textbf{Mr} \ne 0$，(RVEV) 雲端伺服器將 $I_{r2}=\{P_{vid},C_{t0},C_{r0},C_{m_{vi}},b\}$ 送至名聲中心，名聲中心回傳 $I_{r1}=\{H,D,D_{1},D_{2},Cm_{vi}\}$，雲端伺服器判斷是否相同。
 若相同，(RVRP)  雲端伺服器將 $I_{r2}=\{P_{vid},C_{t0},C_{r0},C_{m_{vi}},b\}$ 送至名聲中心，名聲中心回傳 $\{Cm_{v1},Cm_{v2}\}$ 至雲端伺服器，雲端伺服器判斷是否在範圍內。
 若在範圍內，雲端伺服器判斷該車能執行任務，進行下一步驟。
+:::warning
+如果感測車輛回傳矩陣內容是化名，然後不額外傳化名，好像步驟會更少?
+檢查有沒有重疊->丟化名給名聲中心判斷是否在範圍，少了檢查是否一樣步驟。
+:::
 #### Reassign task
 雲端伺服器再加密 $C_{m}$ 得到 $C'_{m}$，計算 $Ack=g^{\alpha_{i}}\text{ mod }p$ ($\alpha_{i}$ 為隨機數)，並將 $I_{c3}=\{Ack,C'_{m},Pk_{d_{h}}\}$ 經由 RSU 傳給感測車輛。
 :::info
 再加密方法來自 "Enabling strong privacy preservation and accurate task allocation for mobile crowdsensing"，這裡不說明。
+:::
+:::warning
+我猜這裡雲端伺服器要儲存 $A_{vid}=(Ack,P_{vid})$，不然雲端伺服器不會知道後面的 $A_{vid}$ 是否合法。
 :::
 ### Submit data
 #### Obtain task content
@@ -199,7 +212,7 @@ $C_{d'}=C_{d}\cdot C_{d0}=\left\{ \begin{array}{l}g_{a}^{d-d_{0}}\cdot\varepsilo
 ### Update reputation values and pseudonyms
 名聲中心在收到 $I_{c5}$ 後，名聲中心先確認 $P_{vid}$ 是否合法。
 若合法，名聲中心檢查回饋數量是否達到 $G_{n}$ 或時間是否達到閾值 $\Delta t$。
-若達到，名聲中心跟據 TFRU 更新 $Cm_{vi}^{*}$。同時，名聲中心更新化名 $P'_{vid}=g^{vid}\oplus R'_{vi}\text{ mod }p$，其中$R'_{vi}$ 為隨機數。
+若有達到，名聲中心跟據 TFRU 更新 $Cm_{vi}^{*}$。同時，名聲中心更新化名 $P'_{vid}=g^{vid}\oplus R'_{vi}\text{ mod }p$，其中$R'_{vi}$ 為隨機數。
 名聲中心將 $I_{r3}=\{P_{vid},Cm_{vi}\}$ 傳給指定感測車輛。
 # Theoretical analysis
 ## Property Analysis
@@ -212,13 +225,57 @@ $C_{d'}=C_{d}\cdot C_{d0}=\left\{ \begin{array}{l}g_{a}^{d-d_{0}}\cdot\varepsilo
 若名聲值不在範圍內，則名聲驗證一定不會通過。(證明略)。
 若只有名聲中心知道兩個實際名聲值，則 RVRP 是零知識。(證明略)。
 ## Privacy Analysis
+以下假設有一個對手 A 想知道各種資訊。
 ### Location Privacy
+A 可能想知道感測<span id="locationPrivacy">車輛位置</span>，可能的方法是透過 Mdl、Mvl、Mr。
+Mdl: A 只能知道任務位置而沒有任何車輛位置。
+Mvl: k-匿名性導致 A 無法知道確切位置。
+:::warning
+論文沒寫清楚，但是我猜是因為車輛位於一個區塊，但是 A 不知道車輛在該區塊的哪個點，或是同一區塊也有很多車而無法特定。
+:::
+Mr: Mdl 和 Mvl 的逐項乘積，特性與 Mvl 相同
 ### Identity Privacy
+A 可能想知道真實身分 <span id="identityPrivacy">vid</span>，可能的方法是透過 $P_{vid}=g^{vid}\oplus R_{vi}\text{ mod }p$。
+假如 A 剛好知道那個隨機數 $R_{vi}$，要從 $g^{vid}$ 推到 vid 必須解離散對數，而目前還沒有多項式時間能計算離散對數。
+A 的另一種知道的方式是透過長時間追蹤 $g^{vid}$，但是 $P_{vid}$ 每過一定時間就會變化，能留給 A 追蹤的時間也不長。
 ### Sensing Data Privacy
+A 可能想偷感測資料 d，可能的方法是透過 $d\overset{Pk_{d_{h}}}{\longrightarrow} C_{d}$，但是同態加密基本上是安全的，A 無法在不知道 $Sk_{d_{h}}$ 的情況下知道 d。
+:::warning
+不知道數據請求者又是怎麼拿到資料的，可能在別篇 paper 有說明。
+:::
 ### Reputation Value Privacy
+A 可能想知道名聲值  <span id="reputationPrivacy">$t$</span> 和名聲閾值 $t_{0}$，可能的方法是透過 Mdl、Mvl、Mr。
+$t_{0}$ 可能透過 $Cm_{T}=(g^{t_{0}}\cdot h^{r_{0}})^{-1}\text{ mod }p$，$t$ 可能透過 $Cm_{vi}=g^{t}\cdot h^{r}\text{ mod }p$。
+$t$ 和 $t_{0}$ 都需要解離散對數，而目前還沒有多項式時間能計算離散對數。
 ## Security Analysis
+### Inference attack
+有包含車輛位置的只有 Mvl、Mr，但是<a href="#locationPrivacy">由上可知</a>兩者因為 k-匿名性無法特定出車輛。
+本方法利用化名 $P_{vid}$，<a href="#identityPrivacy">由上可知</a>任何人都無法得知真實身分 vid。
+### Reputation link attack
+要知道 t 只能通過 $Cm_{vi}$，但是<a href="#reputationPrivacy">由上可知</a>需要解離散對數才能反推 $t$。
+### Data replacement attack and Data pollution attack
+雲端伺服器會根據數據請求者給的標準值 $C_{d0}$ 和誤差容許值 $C_{\Delta d}$ 利用同態加法判斷感測車輛傳的資料 $C_{d}$ 是否在範圍內。只有當誤差小於誤差容許值雲端伺服器才會接受。
+### Sybil attack
+化名 $P_{vid}$ 被名聲中心掌控且一直更新，而 Ack 被雲端伺服器掌握，每個車輛都只拿到一個，惡意車輛無法偽裝多個身分上傳資料。
+:::warning
+不過如果惡意車輛能利用多組真名騙過名聲中心生成多組化名，那這樣就能偽裝多個身分。這部分查證責任在名聲中心。
+:::
+### Reputation tamper attack
+如果感測車輛嘗試竄改名聲值，RVEV 演篹法的相等測試就不會通過，惡意車輛無法成功進入系統。
 # Evaluation and performance analysis
 ## Performance of PPRM Scheme
+### Computation Overhead
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimecrypto.png" width="80%" alt="runtime of each cryptographic operation"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimematrix.png" width="80%" alt="runtime of matrix operation"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimeentity.png" width="80%" alt="runtime of each entity"> <br>
+這裡假定是 8\*8 矩陣且區塊面積為 10。最高也就160ms，本篇認為這頗有效率。
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimecomparison.png" width="80%" alt="runtime comparison"> <br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimegraph.png" width="80%" alt="runtime comparison with graph"> <br>
+:::warning
+不過本篇沒比較其他實體需花費的時間。
+:::
+### Communication Overhead
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/communicationentity.png" width="100%" alt="runtime of each entity"> <br>
 ## Evaluation of RVEV Algorithm
 ## Evaluation of RVRP Algorithm
 ## Evaluation of TFRU Algorithm
