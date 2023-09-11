@@ -9,43 +9,44 @@
 # Prelimary
 
 ## Paillier Cryptosystem
-$N=pq$, where $gcd(pq, (p-1)(q-1)) = 1$
-*g* = random number, $gcd(g, N) = 1$
+$N=pq$, where $gcd(pq, (p-1)(q-1)) = 1$，
+*g* = random number, $gcd(g, N) = 1$，
 該演算法為 <span id="homomorphicEncrypt">homomorphic</span> (同態加密)，符合以下兩種關係:
 
-$E(x_{1})*E(x_{2}) = E(x_{1}+x_{2})$
-$E(x_{1})^b = E(x_{1}*x_{2})$
+$E(x_{1})*E(x_{2}) = E(x_{1}+x_{2})$、
+$E(x_{1})^b = E(x_{1}*x_{2})$。
 
-Plaintext: $0\le m\lt N$, Ciphertext in $\mathbb{Z}_{N^{2}}$
+公鑰: $(N,g)$，密鑰: $(\lambda,\mu)$
+明文範圍: $0\le m\lt N$, 密文範圍: $\mathbb{Z}_{N^{2}}$。
 Encrypt:
-1. Select random $0\le r\lt N$ with $gcd(r, N) = 1$
-2. Compute the ciphertext to be $g^{m}\cdot r^{n}\ mod\ N^{2}$
+1. 選擇隨機 $0\le r\lt N$，其中 $gcd(r, N) = 1$
+2. 計算密文 $g^{m}\cdot r^{N}\ mod\ N^{2}$
 
 Decrypt:
-1. Compute the plaintext to be $m=L(c^{\lambda}\ mod\ n^2)\cdot \mu \ mod\ n$
+1. 計算明文 $m=L(c^{\lambda}\ mod\ N^{2})\cdot \mu \ mod\ N$，其中 $L(x)=\frac{x-1}{N}$
 
 ## Ring
 System that support: 
-* addition commutative (加法交換律)
-* multiplication associative (乘法結合律)
-* distributive (分配律)
+* addition commutative (加法交換律)、
+* multiplication associative (乘法結合律)、
+* distributive (分配律)。
 ## Support Vector Machine
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/svm.jpg" width="60%" alt="svm image"> <br>
 SVM 的基本公式為 $d(t)=\sum_{i\in S}^{}(\alpha_{i}y_{i}x_{i}t)+b$ ，其中:
- * $S$ = support vector 的集合
- * $x_{i}$ = support vector (資料點的向量)
- * $y_{i}$ = label (資料點的標籤)，只能是 1 或 -1
- * $\alpha_{i}$ = Lagrange multiplier
- * $b$ = intercept (截距)
- * $t$ = 欲分類的 m 維特徵向量
- * $d(t)>0$ 時為 positive class，反之則 negative
+ * $S$ = support vector 的集合；
+ * $x_{i}$ = support vector (資料點的向量)；
+ * $y_{i}$ = label (資料點的標籤)，只能是 1 或 -1；
+ * $\alpha_{i}$ = Lagrange multiplier；
+ * $b$ = intercept (截距)；
+ * $t$ = 欲分類的 m 維特徵向量；
+ * $d(t)>0$ 時為 positive class，反之則 negative。
 
-當然訓練樣本不會每次都能用線性區隔，此時就要用到kernal function $K$
+當然訓練樣本不會每次都能用線性區隔，此時就要用到kernal function $K$。
 此時方程式可以改寫成:
 $d(t)=\sum_{i\in S}^{}(\alpha_{i}y_{i}K(x_{i},t))+b$ ，
 其中 $K(x_{i},t)=e^{-\gamma\left\|x_{i}-t\right\|_{2}^{2}}$ , $\gamma\gt 0$ 。<br>
 :::info
-本篇用到的 kernel function 為 RBF kernel function
+本篇用到的 kernel function 為 RBF kernel function。
 :::
 為了解決多類別問題，本篇採用 One versus Rest 方法，也就是先拿其中一類當作+1類，剩下的類別當作-1類，然後用二元分類器學習一次得到一個decision hyperplane；然後第二次繼續拿下一類當作+1類，剩下的類別當作-1類，學習一個decision hyperplane；直到所以的類別都有當作+1類為止，最後看decision value哪個比較大，資料就判給哪一類。
 此時方程式變成:
@@ -53,10 +54,10 @@ $d(t)=\sum_{i\in S}^{}(\alpha_{i}y_{i}K(x_{i},t))+b$ ，
 其中 $M_{c}$ 為具有最大決策函數值的對應類別標籤
 <br>
 後面用到的SVM參數有些不同，主要有以下四類:
-$x_{ij}$ = support vector (資料點的向量)
-$c_{ij}$ = $\alpha_{ij}$ (Lagrange multiplier) 與 $y_{ij}$ (label) 的乘積
-$b_{i}$ = intercept (截距)
-$l_{i}$ = label
+$x_{ij}$ = support vector (資料點的向量)；
+$c_{ij}$ = $\alpha_{ij}$ (Lagrange multiplier) 與 $y_{ij}$ (label) 的乘積；
+$b_{i}$ = intercept (截距)；
+$l_{i}$ = label。
 # Model and design
 
 ## System model
@@ -76,9 +77,9 @@ Threat:
 
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/scheme.jpg" width="100%" alt="Scheme"> <br>
 ## System initialization
-伺服器1生成密鑰對 $(PK_{A},SK_{A})$
-伺服器2生成密鑰對 $(PK_{B},SK_{B})$
-合法使用者 $U_{i}$ 生成 $(PK_{U_{i}},SK_{U_{i}})$
+伺服器1生成密鑰對 $(PK_{A},SK_{A})$，
+伺服器2生成密鑰對 $(PK_{B},SK_{B})$，
+合法使用者 $U_{i}$ 生成 $(PK_{U_{i}},SK_{U_{i}})$。
 ## Data outsourcing
 ### Parameter split
 HP 將 {x}, {c}, b, l 拆成 $\{(x^{A} + x^{B})\},\ \{(c^{A} + c^{B})\}$ ... 等.
@@ -103,18 +104,18 @@ Change ( {x}, {c}, b, l ) into ( {X}, {C}, B, L ), using scale and round
 :::
 ## User request generating
 (使用者 i)
-將資料 *t* 拆成 $t^{A}$ 及 $t^{B}$
-隨機生成 $K_{U_{i}}^{A}$ 和 $K_{U_{i}}^{B}$
-$t^{A}\overset{K_{U_{i}}^{A}}{\longrightarrow}Et^{A}$
-$K_{U_{i}}^{A}\overset{PK_{A}}{\longrightarrow}EK_{U_{i}}^{A}$
-$t^{B}\overset{K_{U_{i}}^{B}}{\longrightarrow}Et^{B}$
-$K_{U_{i}}^{B}\overset{PK_{B}}{\longrightarrow}EK_{U_{i}}^{B}$
-將 $Et^{A}, EK_{U_{i}}^{A}, Et^{B}, EK_{U_{i}}^{B}$ 傳至雲端
+將資料 *t* 拆成 $t^{A}$ 及 $t^{B}$，
+隨機生成 $K_{U_{i}}^{A}$ 和 $K_{U_{i}}^{B}$，
+$t^{A}\overset{K_{U_{i}}^{A}}{\longrightarrow}Et^{A}$，
+$K_{U_{i}}^{A}\overset{PK_{A}}{\longrightarrow}EK_{U_{i}}^{A}$，
+$t^{B}\overset{K_{U_{i}}^{B}}{\longrightarrow}Et^{B}$，
+$K_{U_{i}}^{B}\overset{PK_{B}}{\longrightarrow}EK_{U_{i}}^{B}$，
+將 $Et^{A}, EK_{U_{i}}^{A}, Et^{B}, EK_{U_{i}}^{B}$ 傳至雲端。
 ## Online diagnosis
 (兩個伺服器, 以 $CS_{A}$ 為例)
-$EK_{U_{i}}^{A}\overset{SK_{A}}{\longrightarrow}K_{U_{i}}^{A}$
-$EP^{A}K_{U_{i}}^{A}\overset{K_{A}}{\longrightarrow}t^{A}$
-將 $t^{A}$ 轉成 $T^{A}$ (float 變 int)
+$EK_{U_{i}}^{A}\overset{SK_{A}}{\longrightarrow}K_{U_{i}}^{A}$，
+$EP^{A}K_{U_{i}}^{A}\overset{K_{A}}{\longrightarrow}t^{A}$，
+將 $t^{A}$ 轉成 $T^{A}$ (float 變 int)。
 <br>
 兩個伺服器共同執行 SVM 生成分類結果。這裡主要分成三大步:
 1. decision function computation
@@ -134,7 +135,7 @@ X 隨 j 改變，因為不同 j 是不同物件
 似乎可以把 $X_{ij}$ 變成 $X_{j}$
 :::
 C 隨 i 和 j 改變<br>
-本演算法先根據 j (哪個物件)計算出 kernel 坐標，再將 kernel 坐標與 C 相乘並加總，最後加上截距得到對應 decision value ，此步驟重複至所有 classifier 全部輪完
+本演算法先根據 j (哪個物件)計算出 kernel 坐標，再將 kernel 坐標與 C 相乘並加總，最後加上截距得到對應 decision value ，此步驟重複至所有 classifier 全部輪完。
 :::info
 用 $M_{A}$ $M_{B}$ 儲存 kernel ，因為相同座標下 kernel 坐標不會因為 classifier 的改變而改變
 :::
@@ -165,13 +166,13 @@ int plainSM(int XA, int YA, int XB, int YB) { // 無加密 & 簡化
 ```
 ### Classification result generating
 <br><img src=https://github.com/kc71486/nsda_paper/raw/main/PrivacySVMMedical/img/algorithm_5.jpg width="80%" alt="Algorithm 5: Secure Maximum Class Finding"><br>
-$W_{i}$ 為最佳決策的值與目前決策的值之差
+$W_{i}$ 為最佳決策的值與目前決策的值之差，
 $Z_{i}$ 為最佳決策的標籤與目前決策的標籤之差
-$U_{i}$ 為 1 時原本最佳決策比較好，為 0 時目前新的決策比較好，需要注意的是因為 SC 最後用 SM，A 與 B 不會都拿到 0.5 或 。
+$U_{i}$ 為 1 時原本最佳決策比較好，為 0 時目前新的決策比較好，需要注意的是因為 SC 最後用 SM，A 與 B 不會都拿到 0.5。
 中間用兩個 SM 是為了保證 W 和 Z 不洩漏。
 最後兩行實際意思就是
-$MD_{i}=U_{i}(MD_{i-1}-D_{i})+D_{i}$
-$ML_{i}=U_{i}(ML_{i-1}-L_{i})+L_{i}$
+$MD_{i}=U_{i}(MD_{i-1}-D_{i})+D_{i}$；
+$ML_{i}=U_{i}(ML_{i-1}-L_{i})+L_{i}$。
 :::info
 也就是 $MD_{i}=(U_{i} == 1)?(MD_{i}):(D_{i})$ 和 $ML_{i}=(U_{i} == 1)?(ML_{i}):(L_{i})$
 這種寫法是 branchless program 常用技巧
