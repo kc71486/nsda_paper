@@ -190,9 +190,15 @@ $r_{0}\overset{PK_{r}}{\longrightarrow}C_{r0}$
 ### Submit data
 #### Obtain task content
 感測車輛在收到 $I_{c3}$ 後，解密 $C'_{m}$ 得到感測內容 m。
+:::warning
+可能雲端伺服器有提供那兩組密鑰，我不知道。
+:::
 #### Encrypt and upload data
 感測車輛感測資料 d 並加密 $C_{d}=g_{a}^{d}*\varepsilon_{d}^{n}\text{ mod }n^{2}$，其中 $C_{d}$ 為同態密文，$\varepsilon_{d}$ 隨機數。
 感測車輛計算 $A_{vid}=(Ack,P_{vid})$ ，並將 $I_{s2}=\{C_{d},A_{vid}\}$ 經由 RSU 傳給雲端伺服器。
+:::info
+這是使用 Paillier 的數據請求者公鑰加密。
+:::
 ### Process data and return results
 #### Verify sensing data
 雲端伺服器先檢查 $A_{vid}$。若合法，計算
@@ -240,9 +246,6 @@ A 可能想知道真實身分 <span id="identityPrivacy">vid</span>，可能的�
 A 的另一種知道的方式是透過長時間追蹤 $g^{vid}$，但是 $P_{vid}$ 每過一定時間就會變化，能留給 A 追蹤的時間也不長。
 ### Sensing Data Privacy
 A 可能想偷感測資料 d，可能的方法是透過 $d\overset{Pk_{d_{h}}}{\longrightarrow} C_{d}$，但是同態加密基本上是安全的，A 無法在不知道 $Sk_{d_{h}}$ 的情況下知道 d。
-:::warning
-不知道數據請求者又是怎麼拿到資料的，可能在別篇 paper 有說明。
-:::
 ### Reputation Value Privacy
 A 可能想知道名聲值  <span id="reputationPrivacy">$t$</span> 和名聲閾值 $t_{0}$，可能的方法是透過 Mdl、Mvl、Mr。
 $t_{0}$ 可能透過 $Cm_{T}=(g^{t_{0}}\cdot h^{r_{0}})^{-1}\text{ mod }p$，$t$ 可能透過 $Cm_{vi}=g^{t}\cdot h^{r}\text{ mod }p$。
@@ -268,7 +271,7 @@ $t$ 和 $t_{0}$ 都需要解離散對數，而目前還沒有多項式時間能�
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimecrypto.png" width="80%" alt="runtime of each cryptographic operation"> <br>
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimematrix.png" width="80%" alt="runtime of matrix operation"> <br>
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimeentity.png" width="80%" alt="runtime of each entity"> <br>
-這裡假定是 8\*8 矩陣且區塊面積為 10。最高也就160ms，本篇認為這頗有效率。
+這裡假定是 8\*8 矩陣且區塊面積為 10。最高也就 160ms，本篇認為這頗有效率。
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimecomparison.png" width="80%" alt="runtime comparison"> <br>
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyReputationVehicle/img/runtimegraph.png" width="80%" alt="runtime comparison with graph"> <br>
 :::warning
