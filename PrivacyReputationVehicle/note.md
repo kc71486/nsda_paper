@@ -3,7 +3,9 @@
 # Abstract
 
 # Introduction
-
+移動群體感知 (mobile crowdsensing, MCS) 變熱門。
+惡意車輛可能會利用各種方法損害系統。
+本篇想同時結合位置隱私、身分隱私、感測資料隱私、名聲值隱私、輕量化特點。
 # Related work
 
 # Prelimary
@@ -125,7 +127,8 @@ $\left\{ \begin{array}{l} Cm_{v1}=g^{b}\cdot(Cm_{r})^{-1}\text{ mod }p\\Cm_{v2}=
 一個根據名聲報告更新名聲值的演算法，更新 beta distribution 參數而不是單純線性更新。
 s 代表正回饋，u 代表負回饋，
 Rf 代表 forgetting factor，
-Rg 代表 group weight。
+Rg 代表 group weight，
+t 代表名聲值。
 演算法如下:
 $\left\{\begin{array}{l}\alpha_{Rn}=Rf\cdot\alpha_{Rn-1}+Rg\cdot s_{Rn}\\\beta_{Rn}=Rf\cdot\beta_{Rn-1}+(1-Rg)\cdot u_{Rn}\\t=E(x)=\frac{\alpha_{Rn}}{\alpha_{Rn}+\beta_{Rn}}\end{array}\right.$。
 ## Detail Design
