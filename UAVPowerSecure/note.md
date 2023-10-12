@@ -99,8 +99,8 @@ s.t.&\sum_{i=1}^{I}(B_{I,i}\log_{2}\big(1+\frac{p_{i}^{I}h_{i}^{I\to U}(u)}{|\ti
 總保密率是第一階段保密率 (b)
 第一階段保密率小於第二階段保密率 (c\)
 保密率
-第一階段對任意竊聽者而言干擾小於某個大於0的數字 (e)
-第二階段對任意竊聽者而言干擾小於某個大於0的數字 (f)
+第一階段對任意竊聽者而言數據收集率小於數據收集率最好的竊聽者 (e)
+第二階段對任意竊聽者而言數據收集率小於數據收集率最好的竊聽者 (f)
 水平座標在一定範圍之內 (g, h)
 高度在一定高度區間 (i)
 總功耗不大於一個指定數值 (j)
@@ -155,6 +155,7 @@ s.t.&h_{U}\in[H_{min},h_{max}]&(b4)\\
 2. 階段一保密率上限大於階段二保密率下限。這種情況下，最佳解就是階段一保密率上限。
 3. 階段一保密率和階段二保密率相交。這種情況下，最佳解在兩者相交區域內。
 
+<img src="https://github.com/kc71486/nsda_paper/raw/main/UAVPowerSecure/img/secrecyratephase.png" width="100%" alt="illustration of each secrecy rate case"><br>
 針對這三種情況，我們可以將初始化步驟分為下面三步:
 ### System Feasibility Solution in Case 1
 給定第一階段干擾能量 $\epsilon_{p}$，獲得階段一保密率下限方法為:
@@ -188,6 +189,22 @@ $R_{s,U,E}^{U\to S}=\max_{u,p_{tr}^{U},p_{J,II}^{U\to E}}\log_2(\frac{1+p_{tr}^{
 對 $p_{J,I}^{U\to E}$ 而言，這樣的能量分配是最佳解。
 :::
 # Numerical results
+<img src="https://github.com/kc71486/nsda_paper/raw/main/UAVPowerSecure/img/secrecyrateinit.png" width="80%" alt="secrecyrateinit"><br>
+圖三為保密率與迭代次數的關係。左圖是沒有初始化的狀況，可以看到保密率跟隨迭代次數逐漸上升，對比右圖有初始化，可以發現到右圖收斂速度明顯快很多。
+<img src="https://github.com/kc71486/nsda_paper/raw/main/UAVPowerSecure/img/secrecyratefrequency.png" width="80%" alt="secrecyratefrequency"><br>
+圖四為保密率和各階段頻寬的關係，左圖只改變階段一，可以發現保密率和頻寬幾乎成正比。右圖只改變階段二，可以發現頻寬大到一定程度時，保密率就呈現飽和。右圖部分作者還將總能量做改變，可以發現在飽和的情況下，能量分配對保密率的影響不大。
+<img src="https://github.com/kc71486/nsda_paper/raw/main/UAVPowerSecure/img/uavlocation.png" width="80%" alt="uavlocation"><br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/UAVPowerSecure/img/uavlocationresult.png" width="80%" alt="uavlocationresult"><br>
+圖五為設備、竊聽者與演算法計算出無人機位置的關係。這幾張圖都在 case 3，保密率受第二階段保密率限制，因此位置方面不見得是最佳位置。
+表二為圖五的保密率，可以發現儘管 (c\) 較多竊聽者，但是因為本模型假設竊聽者不合作，保密率與一個竊聽者差不多，而因為竊聽者和設備間距離較遠，保密率也比較高。
+<img src="https://github.com/kc71486/nsda_paper/raw/main/UAVPowerSecure/img/secrecyratefrequency2.png" width="80%" alt="secrecyratefrequency2"><br>
+圖六 (a) 為保密率與距離的關係，可以發現給定足夠頻寬的情下，設備和竊聽者的間距越大，保密率越高。
+:::warning
+那個變數應該代表無人機可動範圍，但是這樣感覺不合理。
+:::
+圖六 (b) ... 感覺就那樣，除了特別點出case 2 外沒啥特別。
+<img src="https://github.com/kc71486/nsda_paper/raw/main/UAVPowerSecure/img/secrecyrateinit2.png" width="80%" alt="secrecyrateinit2"><br>
+圖七和圖三類似，可以發現初始化雖然加快收斂但是可能導出較差的解。同時初始化能提供階段一和二的保密率下限用作簡單衡量。
 # Conclusion
 (作者提出)
 未來可能的改進有: 動態無人機調度、串通的竊聽者等。
