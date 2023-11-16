@@ -54,85 +54,62 @@ $\mu'=\mu+\beta$<br>
 ## The third protection: cloudsourcing platform
 ### blockchain introduction
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/fig4.png" width="80%" alt="fig 4"><br>
-這裡的架構與其他區塊鏈相同
-> header 包含版本號、前一個區塊的雜湊值、時間、計算難度、nonce、merkle tree root。
-> body 包含整個 merkle tree。
-> 這邊 merkle tree root 所使用的雜湊函數為 $SHA256(SHA256(data))$。
+這裡的架構與其他區塊鏈相同。
+header 包含版本號、前一個區塊的雜湊值、時間、計算難度、nonce、merkle tree root。
+body 包含整個 merkle tree。
+這邊 merkle tree root 所使用的雜湊函數為 $SHA256(SHA256(data))$。
 ### merkle tree
 merkle tree 資料結構如下:
-```cpp=
-typedef unsigned _BitInt(256) uint256_t;
-
-extern uint256_t Hashfunc(void *value, size_t size);
-
-struct Node {
-    Node *left;
-    Node *right;
-    uint256_t key;
-    string *value;
-    Node(Node *left, Node *right, uint256_t key, T *value) :
-        left(left), right(right), key(key), value(value) {}
-}
-class MerkleTree {
-    Node *head;
-public:
-    void build(vector<string> &data) {
-        vector<string *> thislayer;
-        for(int i=0; i<data.size(); i++) {
-            hash = Hashfunc(data[i], sizeof(data[i]));
-            Node *e = new Node
-            thislayer.push_back(e)
-        }
-        vector<string> nextlayer;
-        
-    }
-    void __build(vector<string> &values) {
-        vector<Node&> leaves;
-        for(int i=0; i<data.size(); i++) {
-            hash = Hashfunc(data[i], sizeof(data[i]));
-            Node *e = new Node(nullptr, nullptr, hash, data[i])
-            leaves.push_back(*e);
-        }
-        if(leaves.size() % 2 == 1) {
-            leaves.push_back(
-                leaves[leaves.size()-1])
-        }
-        this.root = this.__buildTreeRec(leaves)
-    }
-    Node &__buildTreeRec(vector<Node<string>&> nodes) {
-        if(leaves.size() % 2 == 1) {
-            nodes.push_back(
-                leaves[nodes.size()-1]);
-        }
-        int half = len(nodes.size()) / 2;
-        if(leaves.size() == 2) {
-            return Node(nodes[0], nodes[1],
-                        Node.hash(nodes[0].value + nodes[1].value),
-                        nodes[0].content+"+"+nodes[1].content);
-        }
-        Node &left = this.__buildTreeRec(
-            vector<Node>(nodes.begin(),
-                         nodes.begin() + half));
-        Node &right = this.__buildTreeRec(
-            vector<Node>(nodes.begin() + half,
-                         nodes.end()));
-        uint256_t key = Node.hash(left.value + right.value);
-        string content = f'{left.content}+{right.content}';
-        return Node(&left, &right, key, content)
-    }
-}
-```
-可以想成
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/merkle_ds.png" width="80%" alt="algorithm 4"><br>
+可以想成一個一般的二元樹加上 hash 作為下游節點的驗證，最上面的hash 值同時也會放在 header 中。有些實作不會把 hash 包括進 node 中 (例如區塊鏈)。<br>
 <img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/alg4.png" width="80%" alt="algorithm 4"><br>
 此部分為 merkle tree 演算法，跟其他區塊鏈相同。步驟: 將所有片段分別 hash 後，以二合一的方式逐漸組合，如果只有一個，那就那一個當兩個，最後得到的一個 hash 就是 merkle root。<br>
 ### advantages
 使用區塊鏈的好處:
 1. 快速廣播。請求者將任務丟到區塊鏈上，一旦被認可，就會以非常快的速度廣播到整個區塊鏈上，有問題的話則會直接被丟掉。
-2. 資料以 merkle tree 的方式儲存在區塊鏈上。
+2. 資料以 merkle tree 的方式儲存在區塊鏈上，可達到快速查找 ($O(log_2(N))$，因為是二元搜尋數)、高擴充性(本方法不儲存 hash值，額外儲存空間很少)。
+3. 上傳的資料只需要新增或查找，而不用刪除或修改，上傳之後也不需要怕被竄改。
+4. 節點本身是匿名的。
 # Experiments and result analysis
 ## Experiment settings
 實驗使用六個城市 (紐約、北京、上海、成都、南京、西安) 的計程車資料集，這些資料集包括計程車 id、時間、經緯度。本實驗在這些資料集中，隨機選擇其中 100 計程車資料，這些資料為同時間段下 20 到 60 連續位置軌跡。
 ## Evaluation indicators and analysis
+### Data quality loss
+資料品質下降 (誤差) 指標為：
+$DQL(T-LGEB)=\sum_{i_1}^{t_1}d(l_{i1},l_{i1}')+\sum_{i_2}^{t_2}d(l_{i2},ldi_2)$。
+$d(l_{i1},l_{i1}')$ 為干擾前後位置之間的距離，
+$d(l_{i2},ldi_2)$ 為延伸前後位置之間的距離。<br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/eva_quality.png" width="80%" alt=""><br>
+誤差隨軌跡數量上升的原因誤差是隨軌跡而累加的。
+本方法贏過所有其他方法。
+### Privacy protection capability
+保密能力指標為：
+$\left\{\begin{array}P_L=a\cross p_{oa}+b\cross p_{plt}+c\cross p_{ot}\\a+b+c=1\\p_{oa}=\frac{q\cross S_{name}+e\cross S_{num}+f\cross S_{loc}+g\cross S_{dir}}{k}\\q+e+f+g=1\end{array}\right.$。
+:::warning
+reference 的 \[66\] 無法觀看，所在期刊 impact factor 為 1.9。
+reference 的 \[67\] 找不到來源。
+:::
+$p_{oa}$ 為外部攻擊隱私洩漏的機率，
+$p_{plt}$ 為群眾外包平台洩漏的機率，只有 1(會) 和 0(不會)，
+$p_{ot}$ 為其他第三方平台洩漏的機率，只有 1(會) 和 0(不會)，
+$S_{name}$ 為路徑和身分的相關性，只有 1(相關) 和 0(不相關)，
+$S_{num}$ 為軌跡中上傳資料點數量和實際資料點數量的比值，
+$S_{loc}$ 為上傳位置和實際位置的相似程度，0 為完全不同，
+$S_{dir}$ 為上傳資料點方向變化和實際方向變化的相似程度，0 為完全一致，
+$k$ 為上傳軌跡數量。
+本篇設定 $a=0.6,b=0.2,c=0.2$。<br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/eva_privacy.png" width="80%" alt=""><br>
+贏的原因有: 不依賴其他平台、使用動態假名、拆成多個子軌跡。
+### Storage consumption
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/eva_storage.png" width="80%" alt=""><br>
+### Algorithm running time
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/eva_time.png" width="80%" alt=""><br>
+有使用到邊緣運算，因此較快。
+### The influence of algorithm parameter N
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/impact_quality.png" width="80%" alt=""><br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/impact_privacy.png" width="80%" alt=""><br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/impact_storage.png" width="80%" alt=""><br>
+<img src="https://github.com/kc71486/nsda_paper/raw/main/PrivacyEdgeBlockchain/img/impact_time.png" width="80%" alt=""><br>
 # Conclusion
 我的想法:
 1. 保護隱私和資料完整度方面都遠勝其他。
