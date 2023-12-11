@@ -1,5 +1,11 @@
 # Note
-This repository is for nsda paper hackmd backup and image source.<br>Format in those markdown are not ensured.<br>Some blocks are hackmd exclusive.
+This repository is for nsda paper hackmd backup and image source.
+Format in those markdown are not ensured.
+Some blocks are hackmd exclusive.
 # Links
-<a href="https://github.com/kc71486/nsda_paper/blob/main/PrivacySVMMedical/note.md">Achieving Privacy-Preserving Online Diagnosis With Outsourced SVM in Internet of Medical Things Environment</a><br>
-<a href="https://github.com/kc71486/nsda_paper/blob/main/PrivacyReputationVehicle/note.md">A Lightweight Privacy Preservation Scheme With Efficient Reputation Management for Mobile Crowdsensing in Vehicular Networks</a>
+[Achieving Privacy-Preserving Online Diagnosis With Outsourced SVM in Internet of Medical Things Environment](https://github.com/kc71486/nsda_paper/blob/main/PrivacySVMMedical/note.md)
+[A Lightweight Privacy Preservation Scheme With Efficient Reputation Management for Mobile Crowdsensing in Vehicular Networks](https://github.com/kc71486/nsda_paper/blob/main/PrivacyReputationVehicle/note.md)
+[Joint UAV Deployment and Power Allocation for Secure Space-Air-Ground Communications](https://github.com/kc71486/nsda_paper/blob/main/UAVPowerSecure/note.md)
+[Physical Layer Authentication for LEO Satellite Constellations](https://github.com/kc71486/nsda_paper/blob/main/LEOPLA/note.md)
+[A Triple Real-Time Trajectory Privacy Protection Mechanism Based on Edge Computing and Blockchain in Mobile Crowdsourcing](https://github.com/kc71486/nsda_paper/blob/main/PrivacyEdgeBlockchain/note.md)
+
